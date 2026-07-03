@@ -1,0 +1,26 @@
+// Colores fijos (pasteles, sin titileo) para el chip de tiempo restante de
+// tareas con presupuesto de horas asignado. El orden refleja qué tan cerca
+// está la tarea de agotar su presupuesto: ok → warning → critical (todavía
+// positivo, por debajo del 15%) → overtime (ya en negativo).
+.o_work_item_systray {
+    .o_work_item_time-ok {
+        background-color: #dff5e1;
+        color: #1b5e20;
+    }
+
+    .o_work_item_time-warning {
+        background-color: #fff3cd;
+        color: #7a5b00;
+    }
+
+    .o_work_item_time-critical {
+        background-color: #fde2e1;
+        color: #a12622;
+    }
+
+    .o_work_item_time-overtime {
+        background-color: #f8c4c2;
+        color: #7a1614;
+        font-weight: 600;
+    }
+}
