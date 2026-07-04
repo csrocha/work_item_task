@@ -20,7 +20,8 @@ def _html_to_text(html_value, max_len=280):
 
 
 class ProjectTask(models.Model):
-    _inherit = ['project.task', 'work.item.mixin']
+    _inherit = 'project.task'
+    _work_item_provider = True
 
     def _work_item_label(self):
         self.ensure_one()
