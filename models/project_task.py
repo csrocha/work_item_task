@@ -44,7 +44,7 @@ class ProjectTask(models.Model):
         )
         if not employee:
             return
-        duration = (fields.Datetime.now() - start_datetime).total_seconds() / 3600.0
+        duration = self._work_item_elapsed_hours(start_datetime)
         if duration <= 0:
             return
         self.env['account.analytic.line'].sudo().create({
@@ -55,6 +55,13 @@ class ProjectTask(models.Model):
             'unit_amount': duration,
             'date': start_datetime.date(),
         })
+
+    def _work_item_elapsed_hours(self, start_datetime):
+        """Horas trabajadas desde el inicio del período. Punto de extensión:
+        work_item_enterprise_task lo pisa para usar el timer.timer nativo
+        (que contempla pausas) en vez de la resta simple contra 'ahora'."""
+        self.ensure_one()
+        return (fields.Datetime.now() - start_datetime).total_seconds() / 3600.0
 
     def _work_item_compose_analytic_name(self, intent_note, outcome_note):
         self.ensure_one()

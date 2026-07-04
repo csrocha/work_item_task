@@ -1,0 +1,4 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_work_item_session_project_manager,work.item.session project manager,work_item_systray.model_work_item_session,project.group_project_manager,1,1,1,1
+access_work_item_message_template_project_manager,work.item.message.template project manager,work_item_systray.model_work_item_message_template,project.group_project_manager,1,1,1,1
+access_work_item_session_switch_wizard_project_manager,work.item.session.switch.wizard project manager,work_item_systray.model_work_item_session_switch_wizard,project.group_project_manager,1,1,1,1
