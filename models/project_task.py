@@ -25,20 +25,35 @@ class ProjectTask(models.Model):
 
     def _work_item_label(self):
         self.ensure_one()
+        icon, css_class = self._work_item_icon()
         return {
             'name': self.name,
-            'icon': '',
-            'css_class': '',
+            'icon': icon,
+            'css_class': css_class,
             'description': _html_to_text(self.description),
             'allocated_hours': self.allocated_hours,
             'remaining_hours': self.remaining_hours,
         }
 
+    def _work_item_icon(self):
+        """⚡ camino crítico / ❗ revisión pendiente. is_critical_path es un
+        campo genérico de project_improve (queda en False sin un motor de
+        scheduling que lo compute); state/'02_changes_requested' ya es
+        nativo de project, no hace falta ningún addon extra para esto."""
+        self.ensure_one()
+        if self.is_critical_path:
+            return '⚡', 'text-danger fw-bold'
+        if self.state == '02_changes_requested':
+            return '❗', 'text-warning fw-bold'
+        return '', ''
+
     def _work_item_close(self, start_datetime, intent_note, outcome_note, outcome_blocked):
         """Registra el tiempo trabajado como account.analytic.line,
         combinando la nota de inicio ('qué se iba a hacer') con la de cierre
-        ('qué se logró')."""
+        ('qué se logró'), y aplica blocked = True si corresponde."""
         self.ensure_one()
+        if outcome_blocked:
+            self.blocked = True
         employee = self.env['hr.employee'].search(
             [('user_id', '=', self.env.uid)], limit=1
         )
@@ -90,14 +105,15 @@ class ProjectTask(models.Model):
         return [{
             'res_id': t.id,
             'name': t.name,
-            'icon': '',
-            'css_class': '',
+            'icon': t._work_item_icon()[0],
+            'css_class': t._work_item_icon()[1],
         } for t in tasks]
 
     def _work_item_search_week_tasks(self, date_from, date_to):
         return self.search([
             ('user_ids', 'in', self.env.uid),
             ('state', 'not in', ['1_done', '1_canceled']),
+            ('is_milestone', '=', False),
             ('date_deadline', '>=', datetime.combine(date_from, time.min)),
             ('date_deadline', '<=', datetime.combine(date_to, time.max)),
         ]).sorted(key=lambda t: t.date_deadline)
