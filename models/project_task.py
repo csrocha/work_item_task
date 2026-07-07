@@ -113,7 +113,6 @@ class ProjectTask(models.Model):
         return self.search([
             ('user_ids', 'in', self.env.uid),
             ('state', 'not in', ['1_done', '1_canceled']),
-            ('is_milestone', '=', False),
             ('date_deadline', '>=', datetime.combine(date_from, time.min)),
             ('date_deadline', '<=', datetime.combine(date_to, time.max)),
         ]).sorted(key=lambda t: t.date_deadline)
