@@ -1,22 +1,8 @@
 # -*- coding: utf-8 -*-
-import re
 from datetime import datetime, time, timedelta
-from html import unescape
 
 from odoo import _, api, fields, models
-
-_TAG_RE = re.compile(r'<[^>]+>')
-_SPACE_RE = re.compile(r'\s+')
-
-
-def _html_to_text(html_value, max_len=280):
-    if not html_value:
-        return ''
-    text = unescape(_TAG_RE.sub(' ', html_value))
-    text = _SPACE_RE.sub(' ', text).strip()
-    if len(text) > max_len:
-        text = text[:max_len].rstrip() + '…'
-    return text
+from odoo.addons.work_item_systray.utils import html_to_text as _html_to_text
 
 
 class ProjectTask(models.Model):
