@@ -2,7 +2,7 @@
 {
     'name': "Work Item Systray — Tasks",
     'summary': "Habilita project.task como work item trabajable desde el Work Item Systray",
-    'version': '17.0.3.0.2',
+    'version': '17.0.3.0.3',
     'category': 'Productivity',
     'author': "Cristian S. Rocha <csrocha@gmail.com>",
     'website': "https://github.com/csrocha/work_item_task",

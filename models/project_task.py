@@ -93,6 +93,8 @@ class ProjectTask(models.Model):
             'name': t.name,
             'icon': t._work_item_icon()[0],
             'css_class': t._work_item_icon()[1],
+            'priority': t.priority,
+            'date_deadline': fields.Date.to_string(t.date_deadline.date()) if t.date_deadline else False,
         } for t in tasks]
 
     def _work_item_search_week_tasks(self, date_from, date_to):
